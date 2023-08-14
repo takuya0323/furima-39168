@@ -11,7 +11,8 @@ class Item < ApplicationRecord
   belongs_to :prefecture
   belongs_to :status
 
-  validates :user, :name, :information, presence: true
+  validates :user_id, :information, presence: true
+  validates :name, length: { maximum: 40 },presence: true
   validates :price, presence: true,numericality: { in: 300~9999999 }
   validates :category_id, :cost_id, :date_id, :prefecture_id, :status_id, numericality: { other_than: 1 , message: "can't be blank"}
 
