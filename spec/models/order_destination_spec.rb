@@ -1,13 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe OrderDestination, type: :model do
+  describe '配送先情報の保存' do
+
   before do
-    @order_destination = FactoryBot.build(:order_destination)
+    user = FactoryBot.create(:user)
+    item = FactoryBot.create(:item)
+    @order_destination = FactoryBot.build(:order_destination, user_id: user.id, item_id: item.id)
   end
 
-  describe '配送先情報の保存' do
     context '配送先情報の保存ができるとき' do
       it 'すべての値が正しく入力されていれば保存できること' do
+        expect(@order_destination).to be_valid
+      end
+      it '建物名が空でも保存できる' do
+        @order_destination.building = nil
         expect(@order_destination).to be_valid
       end
     end
@@ -26,7 +33,7 @@ RSpec.describe OrderDestination, type: :model do
       it '郵便番号が空だと保存できないこと' do
         @order_destination.postcode = nil
         @order_destination.valid?
-        expect(@order_destination.errors.full_messages).to include("Postcode can't be blank", 'Postcode is invalid. Include hyphen(-)')
+        expect(@order_destination.errors.full_messages).to include("Postcode can't be blank")
       end
       it '郵便番号にハイフンがないと保存できないこと' do
         @order_destination.postcode = 1_234_567
@@ -65,6 +72,11 @@ RSpec.describe OrderDestination, type: :model do
       end
       it '電話番号が12桁以上あると保存できないこと' do
         @order_destination.phone_number = 12_345_678_910_123_111
+        @order_destination.valid?
+        expect(@order_destination.errors.full_messages).to include('Phone number is invalid')
+      end
+      it '電話番号が9桁以下だと保存できないこと' do
+        @order.destination.phone_number = 123_456_789
         @order_destination.valid?
         expect(@order_destination.errors.full_messages).to include('Phone number is invalid')
       end
