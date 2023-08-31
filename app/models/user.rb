@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
    has_many :items
+   has_many :orders
 
    validates :birthday, presence: true
    validates :nickname, length: { maximum: 40 }, presence:true
