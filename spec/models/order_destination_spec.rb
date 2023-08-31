@@ -31,7 +31,7 @@ RSpec.describe OrderDestination, type: :model do
       it '郵便番号にハイフンがないと保存できないこと' do
         @order_destination.postcode = 1_234_567
         @order_destination.valid?
-        expect(@@order_destination.errors.full_messages).to include('Postcode is invalid. Include hyphen(-)')
+        expect(@order_destination.errors.full_messages).to include('Postcode is invalid. Include hyphen(-)')
       end
       it '都道府県が「---」だと保存できないこと' do
         @order_destination.prefecture_id = 1
@@ -51,7 +51,7 @@ RSpec.describe OrderDestination, type: :model do
       it '番地が空だと保存できないこと' do
         @order_destination.block = nil
         @order_destination.valid?
-        expect(@order_form.errors.full_messages).to include("Block can't be blank")
+        expect(@order_destination.errors.full_messages).to include("Block can't be blank")
       end
       it '電話番号が空だと保存できないこと' do
         @order_destination.phone_number = nil
